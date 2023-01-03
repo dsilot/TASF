@@ -117,7 +117,7 @@
     </head>
     <body>
         <div class="login-form">
-            <form method="POST" action="/login">
+            <form method="POST" th:action = "@{/login}">
                 <h1>Login</h1>
                 <div class="content">
                     <div class="input-field">
@@ -129,6 +129,9 @@
                         <input name="password" type="password" placeholder="Password" >
                     </div>                  
                 </div>
+                <div th:if="${param.error}">
+                    <p style="color:red;text-align: center; padding-bottom: 5px" >Usuario y/o contraseña incorrecto</p>
+                </div>
                 <div class="action">      
                     <button type="submit">Ingresar</button>
                 </div>
@@ -136,12 +139,12 @@
         </div>
         <script>
             /*
-            let form = document.querySelecter('form');
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                return false;
-            });
-            */
+             let form = document.querySelecter('form');
+             form.addEventListener('submit', (e) => {
+             e.preventDefault();
+             return false;
+             });
+             */
         </script>
     </body>
 </html>

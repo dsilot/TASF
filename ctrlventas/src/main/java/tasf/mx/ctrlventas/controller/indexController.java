@@ -9,38 +9,47 @@ package tasf.mx.ctrlventas.controller;
  * @author silot
  */
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+//import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
-import tasf.mx.ctrlventas.payload.checklogin;
 import tasf.mx.ctrlventas.payload.login;
 
 @Controller
 public class indexController {
 
     @Autowired
-    private RestTemplate restTemplate;
+    AuthenticationManager authenticationManager;
 
     @GetMapping("/login")
     public String tologin() {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody login l) {
+    @PostMapping(path = "/login", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+        MediaType.APPLICATION_JSON_VALUE})
+    public String login(login l) {
         try {
-            String url = "http://localhost:8080/user/check";
-            checklogin response = restTemplate.getForObject(url, checklogin.class);
-            
-            return response.getIslogin() ? "consulta" : "login";
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(l.getUsername(), l.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            return authentication.isAuthenticated() ? "redirect:/consulta" : "login";
         } catch (Exception e) {
-            return "login";
+            return "login?error=true";
         }
     }
-    
+
+    @GetMapping("/consulta")
+    @PreAuthorize("hasRole('USER')")
+    public String consulta() {
+        return "consulta";
+    }
+
 }
