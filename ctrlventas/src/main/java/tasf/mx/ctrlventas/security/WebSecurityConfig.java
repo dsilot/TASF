@@ -23,9 +23,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-     @Autowired
-     authProvider authProvider;
-    
+    @Autowired
+    authProvider authProvider;
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
@@ -39,20 +39,23 @@ public class WebSecurityConfig {
         )
                 .formLogin((form) -> form
                 .loginPage("/login")
+                .defaultSuccessUrl("/consulta")
+                .failureUrl("/login?error=true")
                 .permitAll()
                 )
                 .logout((logout) -> logout.permitAll());
+        
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .invalidSessionUrl("/login?error=true")
-                .maximumSessions(1)
+                .maximumSessions(2)
                 .expiredUrl("/login?error=expired");
         return http.build();
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authProvider);  
+        auth.authenticationProvider(authProvider);
     }
 
 //    @Bean
