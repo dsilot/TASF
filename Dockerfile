@@ -16,7 +16,7 @@ ENV JAVA_VERSION 18-ea+1
 
 RUN set -eux; \
 	\
-	arch="$(objdump="$(command -v objdump)" && objdump --file-headers "$objdump" | awk -F '[:,]+[[:space:]]+' '$1 == "architecture" { print $2 }')"; \
+	arch="$(dpkg --print-architecture)"; \
 	case "$arch" in \
 		'i386:x86-64') \
 			downloadUrl='https://download.java.net/java/early_access/jdk18/1/GPL/openjdk-18-ea+1_linux-x64_bin.tar.gz'; \
