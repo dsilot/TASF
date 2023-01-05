@@ -125,6 +125,8 @@ ARG MARIADB_MAJOR=10.6
 ENV MARIADB_MAJOR $MARIADB_MAJOR
 ARG MARIADB_VERSION=1:10.6.11+maria~ubu2004
 ENV MARIADB_VERSION $MARIADB_VERSION
+ENV MARIADB_DATABASE=ventas
+ENV MARIADB_ROOT_PASSWORD=root
 # release-status:Stable
 # (https://downloads.mariadb.org/rest-api/mariadb/)
 
@@ -182,10 +184,10 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 COPY ctrlventas .
 COPY ctrlventasapi .
-COPY ventas.sql .
+#COPY ventas.sql .
 
-RUN set -eux; \
-  mysql -u root -p ventas < ventas.sql
+#RUN set -eux; \
+#  mysql -u root -p ventas < ventas.sql
 
 EXPOSE 8085
 CMD ["./ctrlventas/mvnw", "spring-boot:run";"./ctrlventasapi/mvnw", "spring-boot:run"]

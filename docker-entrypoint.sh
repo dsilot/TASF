@@ -299,12 +299,12 @@ docker_setup_db() {
 		# https://unix.stackexchange.com/questions/265149/why-is-set-o-errexit-breaking-this-read-heredoc-expression/265151#265151
 		if [ -n "$MARIADB_ROOT_PASSWORD_HASH" ]; then
 			read -r -d '' rootCreate <<-EOSQL || true
-				CREATE USER 'root'@'${MARIADB_ROOT_HOST}' IDENTIFIED BY PASSWORD '${MARIADB_ROOT_PASSWORD_HASH}' ;
+				CREATE USER 'root'@'${MARIADB_ROOT_HOST}' IDENTIFIED BY PASSWORD 'root' ;
 				GRANT ALL ON *.* TO 'root'@'${MARIADB_ROOT_HOST}' WITH GRANT OPTION ;
 			EOSQL
 		else
 			read -r -d '' rootCreate <<-EOSQL || true
-				CREATE USER 'root'@'${MARIADB_ROOT_HOST}' IDENTIFIED BY '${rootPasswordEscaped}' ;
+				CREATE USER 'root'@'${MARIADB_ROOT_HOST}' IDENTIFIED BY 'root' ;
 				GRANT ALL ON *.* TO 'root'@'${MARIADB_ROOT_HOST}' WITH GRANT OPTION ;
 			EOSQL
 		fi
@@ -336,7 +336,7 @@ docker_setup_db() {
 	local rootLocalhostPass=
 	if [ -z "$MARIADB_ROOT_PASSWORD_HASH" ]; then
 		# handle MARIADB_ROOT_PASSWORD_HASH for root@localhost after /docker-entrypoint-initdb.d
-		rootLocalhostPass="SET PASSWORD FOR 'root'@'localhost'= PASSWORD('${rootPasswordEscaped}');"
+		rootLocalhostPass="SET PASSWORD FOR 'root'@'localhost'= PASSWORD('root');"
 	fi
 
 	local createDatabase=
