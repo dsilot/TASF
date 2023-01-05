@@ -184,10 +184,10 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 COPY ctrlventas .
 COPY ctrlventasapi .
-#COPY ventas.sql .
+COPY run.sh .
 
 #RUN set -eux; \
 #  mysql -u root -p ventas < ventas.sql
 
 EXPOSE 8085
-CMD ["cd ctrlventas && ./mvnw", "spring-boot:run";"cd ctrlventasapi && ./mvnw", "spring-boot:run"]
+CMD ["./run.sh"]
