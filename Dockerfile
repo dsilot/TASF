@@ -190,8 +190,8 @@ COPY run.sh .
 #  mysql -u root -p ventas < ventas.sql
 
 RUN chmod +x run.sh
-RUN chmod +x ctrlventas/mvnw
-RUN chmod +x ctrlventasapi/mvnw
+RUN chmod +x /ctrlventas/mvnw
+RUN chmod +x /ctrlventasapi/mvnw
 
 EXPOSE 8085
 CMD ["./run.sh"]
