@@ -180,4 +180,5 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 ENTRYPOINT ["./run.sh"]
 EXPOSE 8085
 
-//CMD ["cd /ctrlventas";]
+#CMD ["cd /ctrlventas";]
+
