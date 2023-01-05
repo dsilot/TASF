@@ -182,7 +182,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 COPY ctrlventas/* /ctrlventas/
 COPY ctrlventasapi/* /ctrlventasapi/
-COPY ventas.sql .
+COPY ventas.sql /docker-entrypoint-initdb.d/
 COPY run.sh .
 
 ENTRYPOINT ["docker-entrypoint.sh"]

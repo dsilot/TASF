@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mysql -uroot -hlocalhost -proot ventas < ventas.sql;
+#mysql -uroot -proot ventas < ventas.sql;
 
 start(){
 cd ctrlventas
