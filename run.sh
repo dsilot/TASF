@@ -1,26 +1,26 @@
 #!/bin/bash
 
 #mysql -uroot -proot ventas < ventas.sql;
-startdb(){
-mariadb
-}
 
 start(){
-cd /ctrlventas
-echo "ctrlventas"
+echo "ctrlventas start"
+cd /ctrlventas/
+pwd
 ./mvnw spring-boot:run
+echo "ctrlventas after start"
 }
 
 startapi(){
-cd /ctrlventasapi
-echo "ctrlventasapi"
+echo "ctrlventasapi start"
+cd /ctrlventasapi/
+pwd
 ./mvnw spring-boot:run
+echo "ctrlventasapi after start"
 }
 
 chmod +x /ctrlventas/mvnw
 chmod +x /ctrlventasapi/mvnw
-startdb &
 start &
-//startapi &
+startapi &
 
 echo "web y api iniciados"
