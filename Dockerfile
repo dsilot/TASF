@@ -11,40 +11,23 @@ RUN apt-get update \
 
 ENV JAVA_HOME /usr/java/openjdk-18
 ENV PATH $JAVA_HOME/bin:$PATH
-
 ENV JAVA_VERSION 18-ea+1
 
 RUN set -eux; \
-	\
-	arch="$(dpkg --print-architecture)"; \
-	case "$arch" in \
-		'amd64|x86_64') \
-			downloadUrl='https://download.java.net/java/early_access/jdk18/1/GPL/openjdk-18-ea+1_linux-x64_bin.tar.gz'; \
-			downloadSha256='277c0021c542fbda35d2643351148fa6cceac66b5beca24016c75fafeed815de'; \
-			;; \
-		'aarch64') \
-			downloadUrl='https://download.java.net/java/early_access/jdk18/1/GPL/openjdk-18-ea+1_linux-aarch64_bin.tar.gz'; \
-			downloadSha256='6b615e986bc649e30072f1a7e88986e7a55cad95756c982a2f02f278ec8fe05c'; \
-			;; \
-		*) echo >&2 "error: unsupported architecture: '$arch'"; exit 1 ;; \
-	esac; \
-	\
+  downloadUrl='https://download.java.net/java/early_access/jdk18/1/GPL/openjdk-18-ea+1_linux-x64_bin.tar.gz'; \
+	downloadSha256='277c0021c542fbda35d2643351148fa6cceac66b5beca24016c75fafeed815de'; \
 	curl -fL -o openjdk.tgz "$downloadUrl"; \
 	echo "$downloadSha256 *openjdk.tgz" | sha256sum --strict --check -; \
-	\
 	mkdir -p "$JAVA_HOME"; \
 	tar --extract \
 		--file openjdk.tgz \
 		--directory "$JAVA_HOME" \
 		--strip-components 1 \
-		--no-same-owner \
-	; \
+		--no-same-owner; \
 	rm openjdk.tgz*; \
-	\
 	rm -rf "$JAVA_HOME/lib/security/cacerts"; \
 # see "update-ca-trust" script which creates/maintains this cacerts bundle
 	ln -sT /etc/pki/ca-trust/extracted/java/cacerts "$JAVA_HOME/lib/security/cacerts"; \
-	\
 # https://github.com/oracle/docker-images/blob/a56e0d1ed968ff669d2e2ba8a1483d0f3acc80c0/OracleJava/java-8/Dockerfile#L17-L19
 	ln -sfT "$JAVA_HOME" /usr/java/default; \
 	ln -sfT "$JAVA_HOME" /usr/java/latest; \
@@ -53,13 +36,7 @@ RUN set -eux; \
 		[ ! -e "/usr/bin/$base" ]; \
 		alternatives --install "/usr/bin/$base" "$base" "$bin" 20000; \
 	done; \
-	\
-# https://github.com/docker-library/openjdk/issues/212#issuecomment-420979840
-# https://openjdk.java.net/jeps/341
 	java -Xshare:dump; \
-	\
-# basic smoke test
-	#fileEncoding="$(echo 'System.out.println(System.getProperty("file.encoding"))' | jshell -s -)"; [ "$fileEncoding" = 'UTF-8' ]; rm -rf ~/.java; \
 	javac --version; \
 	java --version
 
