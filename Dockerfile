@@ -72,7 +72,6 @@ ARG GPG_KEYS=177F4010FE56CA3336300305F1656F24C74CD1D8
 # install "zstd" for .sql.zst docker-entrypoint-initdb.d files
 # hadolint ignore=SC2086
 RUN set -eux; \
-	apt-get update; \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 		ca-certificates \
 		gpg \
