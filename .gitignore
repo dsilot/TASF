@@ -1,6 +1,6 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
+ngrok.exe
+Dockerfile - Copy
+ventas.sql
 !**/src/main/**/target/
 !**/src/test/**/target/
 

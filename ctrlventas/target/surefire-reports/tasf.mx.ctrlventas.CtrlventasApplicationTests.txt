@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: tasf.mx.ctrlventas.CtrlventasApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.837 s - in tasf.mx.ctrlventas.CtrlventasApplicationTests
