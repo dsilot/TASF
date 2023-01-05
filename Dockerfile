@@ -177,7 +177,7 @@ COPY run.sh .
 RUN chmod +x run.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-ENTRYPOINT ["./run.sh"]
+#ENTRYPOINT ["./run.sh"]
 EXPOSE 8085
 
 CMD ["mariadb"]

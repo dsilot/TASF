@@ -5,7 +5,7 @@
 start(){
 echo "ctrlventas start"
 cd /ctrlventas/
-pwd
+ls -l
 ./mvnw spring-boot:run
 echo "ctrlventas after start"
 }
@@ -13,7 +13,7 @@ echo "ctrlventas after start"
 startapi(){
 echo "ctrlventasapi start"
 cd /ctrlventasapi/
-pwd
+ls -l
 ./mvnw spring-boot:run
 echo "ctrlventasapi after start"
 }
