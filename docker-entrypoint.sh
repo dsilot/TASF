@@ -374,8 +374,10 @@ docker_setup_db() {
 		SET @@SESSION.SQL_LOG_BIN=0;
                 -- we need the SQL_MODE NO_BACKSLASH_ESCAPES mode to be clear for the password to be set
 		SET @@SESSION.SQL_MODE=REPLACE(@@SESSION.SQL_MODE, 'NO_BACKSLASH_ESCAPES', '');
+
 		DROP USER IF EXISTS root@'127.0.0.1', root@'::1';
 		EXECUTE IMMEDIATE CONCAT('DROP USER IF EXISTS root@\'', @@hostname,'\'');
+
 		${rootLocalhostPass}
 		${rootCreate}
 		${mysqlAtLocalhost}

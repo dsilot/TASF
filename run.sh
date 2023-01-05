@@ -1,6 +1,9 @@
 #!/bin/bash
 
 #mysql -uroot -proot ventas < ventas.sql;
+startdb(){
+mariadb
+}
 
 start(){
 cd /ctrlventas
@@ -16,6 +19,7 @@ echo "ctrlventasapi"
 
 chmod +x /ctrlventas/mvnw
 chmod +x /ctrlventasapi/mvnw
+startdb &
 start &
 startapi &
 

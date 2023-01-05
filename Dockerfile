@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:jammy
 ###------------------------------------------------------------------------------JAVA------------------------------------------------------------
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
@@ -9,13 +9,13 @@ RUN apt-get update \
     && locale-gen en_US.UTF-8 \
     && rm -rf /var/lib/apt/lists/*
 
-ENV JAVA_HOME /usr/java/openjdk-18
+ENV JAVA_HOME /usr/java/openjdk-19
 ENV PATH $JAVA_HOME/bin:$PATH
-ENV JAVA_VERSION 18.0.2.1
+ENV JAVA_VERSION 19.0.1
 
 RUN set -eux; \
-  downloadUrl='https://download.java.net/java/GA/jdk18.0.2.1/db379da656dc47308e138f21b33976fa/1/GPL/openjdk-18.0.2.1_linux-x64_bin.tar.gz'; \
-	downloadSha256='3bfdb59fc38884672677cebca9a216902d87fe867563182ae8bc3373a65a2ebd'; \
+  downloadUrl='https://download.java.net/java/GA/jdk19.0.1/afdd2e245b014143b62ccb916125e3ce/10/GPL/openjdk-19.0.1_linux-x64_bin.tar.gz'; \
+	downloadSha256='7a466882c7adfa369319fe4adeb197ee5d7f79e75d641e9ef94abee1fc22b1fa'; \
 	curl -fL -o openjdk.tgz "$downloadUrl"; \
 	echo "$downloadSha256 *openjdk.tgz" | sha256sum --strict --check -; \
 	mkdir -p "$JAVA_HOME"; \
@@ -34,7 +34,7 @@ RUN set -eux; \
 	for bin in "$JAVA_HOME/bin/"*; do \
 		base="$(basename "$bin")"; \
 		[ ! -e "/usr/bin/$base" ]; \
-		update-alternatives --install "/usr/bin/$base" "$base" "$bin" 20000; \
+		update-alternatives --install "/usr/bin/$base" "$base" "$bin" 1; \
 	done; \
 	java -Xshare:dump; \
 	javac --version; \
@@ -42,6 +42,7 @@ RUN set -eux; \
 
 ###------------------------------------------------------------------------------MYSQL-----------------------------------------------------------
 
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
 
 # add gosu for easy step-down from root
@@ -111,25 +112,25 @@ LABEL org.opencontainers.image.authors="MariaDB Community" \
       org.opencontainers.image.title="MariaDB Database" \
       org.opencontainers.image.description="MariaDB Database for relational SQL" \
       org.opencontainers.image.documentation="https://hub.docker.com/_/mariadb/" \
-      org.opencontainers.image.base.name="docker.io/library/ubuntu:focal" \
+      org.opencontainers.image.base.name="docker.io/library/ubuntu:jammy" \
       org.opencontainers.image.licenses="GPL-2.0" \
       org.opencontainers.image.source="https://github.com/MariaDB/mariadb-docker" \
       org.opencontainers.image.vendor="MariaDB Community" \
-      org.opencontainers.image.version="10.6.11" \
+      org.opencontainers.image.version="10.11.1" \
       org.opencontainers.image.url="https://github.com/MariaDB/mariadb-docker"
 
 # bashbrew-architectures: amd64 arm64v8 ppc64le s390x
-ARG MARIADB_MAJOR=10.6
-ENV MARIADB_MAJOR $MARIADB_MAJOR
-ARG MARIADB_VERSION=1:10.6.11+maria~ubu2004
+ARG MARIADB_VERSION=1:10.11.1+maria~ubu2204
 ENV MARIADB_VERSION $MARIADB_VERSION
+#mis variables de entorno
 ENV MARIADB_DATABASE=ventas
 ENV MARIADB_ROOT_PASSWORD=root
-# release-status:Stable
+
+# release-status:RC
 # (https://downloads.mariadb.org/rest-api/mariadb/)
 
 # Allowing overriding of REPOSITORY, a URL that includes suite and component for testing and Enterprise Versions
-ARG REPOSITORY="http://archive.mariadb.org/mariadb-10.6.11/repo/ubuntu/ focal main"
+ARG REPOSITORY="http://archive.mariadb.org/mariadb-10.11.1/repo/ubuntu/ jammy main"
 
 RUN set -e;\
 	echo "deb ${REPOSITORY}" > /etc/apt/sources.list.d/mariadb.list; \
@@ -146,8 +147,8 @@ RUN set -e;\
 # hadolint ignore=DL3015
 RUN set -ex; \
 	{ \
-		echo "mariadb-server-$MARIADB_MAJOR" mysql-server/root_password password 'unused'; \
-		echo "mariadb-server-$MARIADB_MAJOR" mysql-server/root_password_again password 'unused'; \
+		echo "mariadb-server" mysql-server/root_password password 'unused'; \
+		echo "mariadb-server" mysql-server/root_password_again password 'unused'; \
 	} | debconf-set-selections; \
 	apt-get update; \
 # mariadb-backup is installed at the same time so that `mysql-common` is only installed once from just mariadb repos
@@ -178,16 +179,16 @@ VOLUME /var/lib/mysql
 
 COPY healthcheck.sh /usr/local/bin/healthcheck.sh
 COPY docker-entrypoint.sh /usr/local/bin/
+
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 COPY ctrlventas/* /ctrlventas/
 COPY ctrlventasapi/* /ctrlventasapi/
 COPY ventas.sql /docker-entrypoint-initdb.d/
 COPY run.sh .
+RUN chmod +x run.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-
-RUN chmod +x run.sh
 
 EXPOSE 8085
 
