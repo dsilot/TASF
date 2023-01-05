@@ -1,4 +1,7 @@
 #!/bin/bash
+
+mysql -uroot -hlocalhost -proot ventas < ventas.sql;
+
 start(){
 cd ctrlventas
 ./mvnw spring-boot:run

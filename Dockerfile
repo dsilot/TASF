@@ -11,7 +11,7 @@ RUN apt-get update \
 
 ENV JAVA_HOME /usr/java/openjdk-18
 ENV PATH $JAVA_HOME/bin:$PATH
-ENV JAVA_VERSION 18.0.21
+ENV JAVA_VERSION 18.0.2.1
 
 RUN set -eux; \
   downloadUrl='https://download.java.net/java/GA/jdk18.0.2.1/db379da656dc47308e138f21b33976fa/1/GPL/openjdk-18.0.2.1_linux-x64_bin.tar.gz'; \
@@ -178,16 +178,17 @@ VOLUME /var/lib/mysql
 
 COPY healthcheck.sh /usr/local/bin/healthcheck.sh
 COPY docker-entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["docker-entrypoint.sh"]
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 COPY ctrlventas .
 COPY ctrlventasapi .
+COPY ventas.sql .
 COPY run.sh .
 
-#RUN set -eux; \
-#  mysql -u root -p ventas < ventas.sql
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 RUN chmod +x run.sh
 
 EXPOSE 8085
+
 CMD ["./run.sh"]
