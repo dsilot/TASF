@@ -11,11 +11,11 @@ RUN apt-get update \
 
 ENV JAVA_HOME /usr/java/openjdk-18
 ENV PATH $JAVA_HOME/bin:$PATH
-ENV JAVA_VERSION 18-ea+1
+ENV JAVA_VERSION 18.0.21
 
 RUN set -eux; \
-  downloadUrl='https://download.java.net/java/early_access/jdk18/1/GPL/openjdk-18-ea+1_linux-x64_bin.tar.gz'; \
-	downloadSha256='277c0021c542fbda35d2643351148fa6cceac66b5beca24016c75fafeed815de'; \
+  downloadUrl='https://download.java.net/java/GA/jdk18.0.2.1/db379da656dc47308e138f21b33976fa/1/GPL/openjdk-18.0.2.1_linux-x64_bin.tar.gz'; \
+	downloadSha256='3bfdb59fc38884672677cebca9a216902d87fe867563182ae8bc3373a65a2ebd'; \
 	curl -fL -o openjdk.tgz "$downloadUrl"; \
 	echo "$downloadSha256 *openjdk.tgz" | sha256sum --strict --check -; \
 	mkdir -p "$JAVA_HOME"; \
