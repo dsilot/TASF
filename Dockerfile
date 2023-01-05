@@ -53,7 +53,7 @@ ENV JAVA_TOOL_OPTIONS="-XX:+IgnoreUnrecognizedVMOptions -XX:+IdleTuningGcOnIdle 
 ###------------------------------------------------------------------------------MYSQL-----------------------------------------------------------
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN apt install mariadb-server mariadb-client
+RUN apt-get install mariadb-server mariadb-client \
 
 
 COPY ctrlventas .
