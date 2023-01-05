@@ -189,5 +189,7 @@ COPY run.sh .
 #RUN set -eux; \
 #  mysql -u root -p ventas < ventas.sql
 
+RUN chmod +x run.sh
+
 EXPOSE 8085
 CMD ["./run.sh"]
