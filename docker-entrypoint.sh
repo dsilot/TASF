@@ -299,12 +299,12 @@ docker_setup_db() {
 		# https://unix.stackexchange.com/questions/265149/why-is-set-o-errexit-breaking-this-read-heredoc-expression/265151#265151
 		if [ -n "$MARIADB_ROOT_PASSWORD_HASH" ]; then
 			read -r -d '' rootCreate <<-EOSQL || true
-				CREATE USER 'root'@'${MARIADB_ROOT_HOST}' IDENTIFIED BY PASSWORD 'root' ;
+				CREATE USER 'root'@'${MARIADB_ROOT_HOST}' IDENTIFIED BY PASSWORD '${MARIADB_ROOT_PASSWORD_HASH}' ;
 				GRANT ALL ON *.* TO 'root'@'${MARIADB_ROOT_HOST}' WITH GRANT OPTION ;
 			EOSQL
 		else
 			read -r -d '' rootCreate <<-EOSQL || true
-				CREATE USER 'root'@'${MARIADB_ROOT_HOST}' IDENTIFIED BY 'root' ;
+				CREATE USER 'root'@'${MARIADB_ROOT_HOST}' IDENTIFIED BY '${rootPasswordEscaped}' ;
 				GRANT ALL ON *.* TO 'root'@'${MARIADB_ROOT_HOST}' WITH GRANT OPTION ;
 			EOSQL
 		fi
@@ -336,7 +336,7 @@ docker_setup_db() {
 	local rootLocalhostPass=
 	if [ -z "$MARIADB_ROOT_PASSWORD_HASH" ]; then
 		# handle MARIADB_ROOT_PASSWORD_HASH for root@localhost after /docker-entrypoint-initdb.d
-		rootLocalhostPass="SET PASSWORD FOR 'root'@'localhost'= PASSWORD('root');"
+		rootLocalhostPass="SET PASSWORD FOR 'root'@'localhost'= PASSWORD('${rootPasswordEscaped}');"
 	fi
 
 	local createDatabase=
@@ -374,10 +374,8 @@ docker_setup_db() {
 		SET @@SESSION.SQL_LOG_BIN=0;
                 -- we need the SQL_MODE NO_BACKSLASH_ESCAPES mode to be clear for the password to be set
 		SET @@SESSION.SQL_MODE=REPLACE(@@SESSION.SQL_MODE, 'NO_BACKSLASH_ESCAPES', '');
-
 		DROP USER IF EXISTS root@'127.0.0.1', root@'::1';
 		EXECUTE IMMEDIATE CONCAT('DROP USER IF EXISTS root@\'', @@hostname,'\'');
-
 		${rootLocalhostPass}
 		${rootCreate}
 		${mysqlAtLocalhost}
