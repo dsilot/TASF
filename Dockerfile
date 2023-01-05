@@ -1,7 +1,6 @@
 FROM ubuntu:focal
 ###------------------------------------------------------------------------------JAVA------------------------------------------------------------
 
-
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
@@ -87,6 +86,8 @@ RUN set -eux; \
 	fileEncoding="$(echo 'System.out.println(System.getProperty("file.encoding"))' | jshell -s -)"; [ "$fileEncoding" = 'UTF-8' ]; rm -rf ~/.java; \
 	javac --version; \
 	java --version
+
+
 ###------------------------------------------------------------------------------MYSQL-----------------------------------------------------------
 
 RUN groupadd -r mysql && useradd -r -g mysql mysql
