@@ -117,6 +117,7 @@ RUN set -ex; \
 # https://github.com/tianon/gosu/releases
 ENV GOSU_VERSION 1.12
 RUN set -eux; \
+	apt-get update; \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ca-certificates; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get install -y --no-install-recommends wget; \
@@ -144,6 +145,7 @@ RUN mkdir /docker-entrypoint-initdb.d
 # install "xz-utils" for .sql.xz docker-entrypoint-initdb.d files
 # install "zstd" for .sql.zst docker-entrypoint-initdb.d files
 RUN set -ex; \
+	apt-get update; \
 	if [ focal = focal ]; then JEMALLOC=libjemalloc2 ; else JEMALLOC=libjemalloc1 ; fi ; \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 		$JEMALLOC \
@@ -190,8 +192,8 @@ RUN set -e;\
 # also, we set debconf keys to make APT a little quieter
 RUN set -ex; \
 	{ \
-		echo "mariadb-server-$MARIADB_MAJOR" mysql-server/root_password password 'root'; \
-		echo "mariadb-server-$MARIADB_MAJOR" mysql-server/root_password_again password 'root'; \
+		echo "mariadb-server-$MARIADB_MAJOR" mysql-server/root_password password 'unused'; \
+		echo "mariadb-server-$MARIADB_MAJOR" mysql-server/root_password_again password 'unused'; \
 	} | debconf-set-selections; \
 	apt-get update; \
 	apt-get install -y \
@@ -218,7 +220,7 @@ VOLUME /var/lib/mysql
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ##ENTRYPOINT ["docker-entrypoint.sh"]
-
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 COPY ctrlventas .
 COPY ctrlventasapi .
 COPY ventas.sql .
