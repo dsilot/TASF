@@ -34,7 +34,7 @@ RUN set -eux; \
 	for bin in "$JAVA_HOME/bin/"*; do \
 		base="$(basename "$bin")"; \
 		[ ! -e "/usr/bin/$base" ]; \
-		alternatives --install "/usr/bin/$base" "$base" "$bin" 20000; \
+		update-alternatives --install "/usr/bin/$base" "$base" "$bin" 20000; \
 	done; \
 	java -Xshare:dump; \
 	javac --version; \
