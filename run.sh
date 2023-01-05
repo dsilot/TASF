@@ -21,6 +21,6 @@ chmod +x /ctrlventas/mvnw
 chmod +x /ctrlventasapi/mvnw
 startdb &
 start &
-startapi &
+//startapi &
 
 echo "web y api iniciados"

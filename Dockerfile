@@ -192,4 +192,4 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 8085
 
-CMD ["./run.sh"]
+CMD ["cd","/ctrlventas";"./mvnw", "spring-boot:run"]
