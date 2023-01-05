@@ -194,7 +194,7 @@ COPY ctrlventasapi .
 COPY ventas.sql .
 
 EXPOSE 8085 
-
+CMD ["mariadbd"]
 RUN mysql -u root -p"root" ventas < ventas.sql
 
 CMD ["./ctrlventas/mvnw", "spring-boot:run";"./ctrlventasapi/mvnw", "spring-boot:run"]
