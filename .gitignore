@@ -1,6 +1,6 @@
 ngrok.exe
 Dockerfile - Copy
-ventas.sql
+
 !**/src/main/**/target/
 !**/src/test/**/target/
 
