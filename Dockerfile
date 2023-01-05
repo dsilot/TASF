@@ -180,8 +180,8 @@ COPY healthcheck.sh /usr/local/bin/healthcheck.sh
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-COPY ctrlventas .
-COPY ctrlventasapi .
+COPY ctrlventas/* /ctrlventas/
+COPY ctrlventasapi/* /ctrlventasapi/
 COPY ventas.sql .
 COPY run.sh .
 
