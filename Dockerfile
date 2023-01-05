@@ -62,7 +62,6 @@ ARG GPG_KEYS=177F4010FE56CA3336300305F1656F24C74CD1D8
 # install "zstd" for .sql.zst docker-entrypoint-initdb.d files
 # hadolint ignore=SC2086
 RUN set -eux; \
-	apt-get update; \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 		ca-certificates \
 		gpg \
@@ -106,18 +105,6 @@ RUN mkdir /docker-entrypoint-initdb.d
 # Ensure the container exec commands handle range of utf8 characters based of
 # default locales in base image (https://github.com/docker-library/docs/blob/135b79cc8093ab02e55debb61fdb079ab2dbce87/ubuntu/README.md#locales)
 ENV LANG C.UTF-8
-
-# OCI annotations to image
-LABEL org.opencontainers.image.authors="MariaDB Community" \
-      org.opencontainers.image.title="MariaDB Database" \
-      org.opencontainers.image.description="MariaDB Database for relational SQL" \
-      org.opencontainers.image.documentation="https://hub.docker.com/_/mariadb/" \
-      org.opencontainers.image.base.name="docker.io/library/ubuntu:jammy" \
-      org.opencontainers.image.licenses="GPL-2.0" \
-      org.opencontainers.image.source="https://github.com/MariaDB/mariadb-docker" \
-      org.opencontainers.image.vendor="MariaDB Community" \
-      org.opencontainers.image.version="10.11.1" \
-      org.opencontainers.image.url="https://github.com/MariaDB/mariadb-docker"
 
 # bashbrew-architectures: amd64 arm64v8 ppc64le s390x
 ARG MARIADB_VERSION=1:10.11.1+maria~ubu2204
@@ -192,4 +179,4 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 8085
 
-CMD ["cd","/ctrlventas";"./mvnw", "spring-boot:run"]
+CMD ["./run.sh"]
