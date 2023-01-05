@@ -1,8 +1,10 @@
 ngrok.exe
 Dockerfile - Copy
-
 !**/src/main/**/target/
 !**/src/test/**/target/
+
+ctrlventas/target/
+ctrlventasapi/target/
 
 ### STS ###
 .apt_generated
