@@ -6,6 +6,9 @@ Dockerfile - Copy
 ctrlventas/target/
 ctrlventasapi/target/
 
+/ctrlventas/target/
+/ctrlventasapi/target/
+
 ### STS ###
 .apt_generated
 .classpath
