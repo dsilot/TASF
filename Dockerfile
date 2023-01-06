@@ -180,5 +180,5 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 #ENTRYPOINT ["./run.sh"]
 EXPOSE 8085
 
-CMD ["mariadb"]
+CMD ["mariadbd"]
 
