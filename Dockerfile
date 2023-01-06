@@ -176,9 +176,9 @@ COPY ventas.sql /docker-entrypoint-initdb.d/
 COPY run.sh .
 RUN chmod +x run.sh
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+#ENTRYPOINT ["docker-entrypoint.sh"]
 #ENTRYPOINT ["mariadbd"]
 EXPOSE 8085
 
-CMD ["mariadbd"]
+#CMD ["mariadbd"]
 ENTRYPOINT ["./run.sh"]

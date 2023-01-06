@@ -1,5 +1,7 @@
 #!/bin/bash
 
+docker-entrypoint.sh
+mariadbd
 start(){
 echo "ctrlventas start"
 cd /ctrlventas/
