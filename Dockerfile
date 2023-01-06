@@ -171,13 +171,13 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 COPY ctrlventas/ /ctrlventas/
-RUN mkdir /ctrlventas/.mvn/
-COPY ctrlventas/.mvn/ /ctrlventas/.mvn/
+#RUN mkdir /ctrlventas/.mvn/
+#COPY ctrlventas/.mvn/ /ctrlventas/.mvn/
 RUN ls --recursive /ctrlventas/
 
 COPY ctrlventasapi/ /ctrlventasapi/
-RUN mkdir /ctrlventasapi/.mvn/
-COPY ctrlventasapi/.mvn/ /ctrlventasapi/.mvn/
+#RUN mkdir /ctrlventasapi/.mvn/
+#COPY ctrlventasapi/.mvn/ /ctrlventasapi/.mvn/
 RUN ls --recursive /ctrlventasapi/
 
 COPY ventas.sql /docker-entrypoint-initdb.d/
