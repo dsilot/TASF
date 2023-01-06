@@ -174,7 +174,10 @@ COPY ctrlventas/* /ctrlventas/
 COPY ctrlventasapi/* /ctrlventasapi/
 COPY ventas.sql /docker-entrypoint-initdb.d/
 COPY run.sh .
+COPY build.sh .
 RUN chmod +x run.sh
+RUN chmod +x build.sh
+RUN ./build.sh
 
 #ENTRYPOINT ["docker-entrypoint.sh"]
 #ENTRYPOINT ["mariadbd"]
