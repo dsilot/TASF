@@ -3,12 +3,12 @@
 chmod +x /ctrlventas/mvnw
 chmod +x /ctrlventasapi/mvnw
 cd /ctrlventas/
-tar --extract --file ctrlventa.zip
+tar xvf ctrlventas.tar
 ls -l
 ./mvnw package
 
 cd /ctrlventasapi/
-tar --extract --file ctrlventasapi.zip
+tar xvf ctrlventasapi.tar
 ls -l
 ./mvnw package
 
