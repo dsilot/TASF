@@ -25,9 +25,9 @@ RUN set -eux; \
 		--strip-components 1 \
 		--no-same-owner; \
 	rm openjdk.tgz*; \
-	rm -rf "$JAVA_HOME/lib/security/cacerts"; \
+#	rm -rf "$JAVA_HOME/lib/security/cacerts"; \
 # see "update-ca-trust" script which creates/maintains this cacerts bundle
-	ln -sT /etc/pki/ca-trust/extracted/java/cacerts "$JAVA_HOME/lib/security/cacerts"; \
+#	ln -sT /etc/pki/ca-trust/extracted/java/cacerts "$JAVA_HOME/lib/security/cacerts"; \
 # https://github.com/oracle/docker-images/blob/a56e0d1ed968ff669d2e2ba8a1483d0f3acc80c0/OracleJava/java-8/Dockerfile#L17-L19
 	ln -sfT "$JAVA_HOME" /usr/java/default; \
 	ln -sfT "$JAVA_HOME" /usr/java/latest; \
