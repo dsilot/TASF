@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#mysql -uroot -proot ventas < ventas.sql;
-
 start(){
 echo "ctrlventas start"
 cd /ctrlventas/
