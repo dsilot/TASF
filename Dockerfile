@@ -167,29 +167,21 @@ VOLUME /var/lib/mysql
 
 COPY healthcheck.sh /usr/local/bin/healthcheck.sh
 COPY docker-entrypoint.sh /usr/local/bin/
-
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+#RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 COPY ctrlventas/ /ctrlventas/
-#RUN mkdir /ctrlventas/.mvn/
-#COPY ctrlventas/.mvn/ /ctrlventas/.mvn/
-RUN ls --recursive /ctrlventas/
-
 COPY ctrlventasapi/ /ctrlventasapi/
-#RUN mkdir /ctrlventasapi/.mvn/
-#COPY ctrlventasapi/.mvn/ /ctrlventasapi/.mvn/
-RUN ls --recursive /ctrlventasapi/
-
 COPY ventas.sql /docker-entrypoint-initdb.d/
 COPY run.sh .
 COPY build.sh .
 RUN chmod +x run.sh
 RUN chmod +x build.sh
-RUN ./build.sh
 
-#ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+RUN ./build.sh
 #ENTRYPOINT ["mariadbd"]
 EXPOSE 8085
 
 #CMD ["mariadbd"]
-ENTRYPOINT ["./run.sh"]
+CMD ["./run.sh"]
